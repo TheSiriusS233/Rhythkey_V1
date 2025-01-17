@@ -1,4 +1,7 @@
 # Introduction
+
+<img src="doc/rhythkey_Pic1.jpg" width="90%">
+
 Rhythkey is a versatile music game controller which use Keyboard Simulation and mouse simulation. The controllor used in this project is arduino pro micro.
 This controller consist 12 keys (recommand: 8 1U sized keys and 2 2.75U sized side-keys), 6 switches, 2 encoders and 1 potentiometers.
 
