@@ -23,8 +23,8 @@ main part:
 * 4x Satellite Axis for 2.75 U keys.
 
 electronics:
-* 2x Incremental Encoders (with 2 knobs)
-* 1x B10K Slide Potentiometer (with knob)
+* 2x Incremental Encoders (EC11E09244BS) (with 2 knobs)
+* 1x B10K 75mm Slide Potentiometer (with knob)
 * 6x N.O.(Normally Open) Pushbutton Switches (with knobs)
 * 10x R0805 10K ohm resistors
 * 4x R0805 100nF capacitors
