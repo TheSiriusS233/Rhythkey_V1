@@ -53,5 +53,17 @@ step 2: soldering
 * bottom layer:
   * hotswap Socket Kailh for hotswap keyboard
   * Female Headers
- 
+ * after soldering, your PCB board should looks like this:
+   <img src="doc/Assm_Pic1.jpg" width="90%">
+   <img src="doc/Assm_Pic2.jpg" width="90%">
+   
 Step 3: Assembly
+ 1. After soldering, fix the PCB on the bottom plate with 6 M2x8 Self-tapping screws
+ 2. Put Satellite Axis into the slot of top plate.
+    <img src="doc/Assm_Pic3.jpg" width="90%">
+ 3. Fix the top plate with 5 M2x16 Self-tapping screws
+    <img src="doc/Assm_Pic4.jpg" width="90%">
+ 4. Insert 12 mechanical key_Switches in the slot of top plate.
+    <img src="doc/Assm_Pic5.jpg" width="90%">
+ 5. Put the keycaps and knobs on corresponding parts.
+    <img src="doc/Assm_Pic6.jpg" width="90%">
