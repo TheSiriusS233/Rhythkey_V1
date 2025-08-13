@@ -4,10 +4,11 @@
 
 #include <Keyboard.h>
 #include <Mouse.h>
+#include <Encoder.h>
 
-char key_array[3][6] = {{65,66,67,68,85,79},
-                        {74,75,79,76,76,80},
-                        {81,83,74,68,68,70}};
+char key_array[3][6] = {{49,50,51,68,85,79},
+                       {113,106,107,108,111,113},
+                      {112,117,115,100,102,112}}; //layout use for ongeki
 byte row_index;
 byte col_index;
 
@@ -16,18 +17,26 @@ bool prev_state[3][6] = {{1, 1, 1, 1, 1, 1},
                          {1, 1, 1, 1, 1, 1},
                          {1, 1, 1, 1, 1, 1}}; //initialize previous button state.
 
+Encoder knobLeft(2, 3);
+Encoder knobRight(8, 9);
+
+long positionLeft  = -999;
+long positionRight = -999;
+long newLeft, newRight;
+
 int pot;
 int pre_cursor_val;
 //bool trig = 0;
 
 void setup() 
 {
-  pinMode(10, INPUT_PULLUP);
-  pinMode(16, INPUT_PULLUP);
-  pinMode(14, INPUT_PULLUP);
-  pinMode(15, INPUT_PULLUP);
-  pinMode(A2, INPUT_PULLUP);
-  pinMode(A3, INPUT_PULLUP);
+  pinMode(10, INPUT);
+  pinMode(16, INPUT);
+  pinMode(14, INPUT);
+  pinMode(15, INPUT);
+  pinMode(A1, INPUT);
+  pinMode(A2, INPUT);
+  pinMode(A3, INPUT);
   pinMode(4, OUTPUT);
   pinMode(5, OUTPUT);
   pinMode(6, OUTPUT);
@@ -38,13 +47,12 @@ void setup()
 void loop() 
 {
 
-  for(byte index=0;index<5;index++)
-  {
+ 
     for (row_index = 0; row_index<3; row_index++)
     {
-      digitalWrite(4,HIGH);
-      digitalWrite(5,HIGH);
-      digitalWrite(6,HIGH); // reset all OUTPUT pin as HIGH.
+      digitalWrite(4,HIGH);// KO1
+      digitalWrite(5,HIGH);//KO2
+      digitalWrite(6,HIGH); //KO3 // reset all OUTPUT pin as HIGH.
       digitalWrite(row_index+4,LOW); // assign the pin of current row as LOW. (current sink)
 
       //for column 0 (first column)
@@ -71,17 +79,24 @@ void loop()
       check_button_state(button_state[row_index][5], prev_state[row_index][5], key_array[row_index][5]); // call function to give key output respon
       prev_state[row_index][5] = button_state[row_index][5];      
     }
-  delay(2);
-  //get the aveage output of potentiometer. 
-  pot = pot + analogRead(A0); //get the 10 accumulated value of A0
+  delay(1);
+  //mouse control by encoder 
+  newLeft = knobLeft.read();
+  newRight = knobRight.read();
+  if (newLeft != positionLeft) 
+  {
+    mouse_control(newLeft, positionLeft);
+    //Mouse.move((newLeft-positionLeft)*6,0,0);
+    positionLeft = newLeft;
   }
-  pot = pot/5; //get the aveage value of pot
-  //Serial.println(pot);
-  pre_cursor_val = mouse_control(pot, pre_cursor_val);
-  
+  if (newRight != positionRight) 
+  {
+    mouse_control(newRight, positionRight);
+    //Mouse.move((newRight-positionRight)*6,0,0);
+    positionRight = newRight;
+  }
+
 }
-
-
 
 int check_button_state (bool state, bool prev_state, int key)
 {
@@ -110,24 +125,10 @@ int check_button_state (bool state, bool prev_state, int key)
  
 }
 
-int mouse_control(int pot_ave, int prev)
+int mouse_control(int curr, int prev)
 {
-  int cursor;
+  int sens = 6.5;
 
-  cursor = int(1023.0-1079.0*(1023.0-pot_ave)/1023.0);
+  Mouse.move((curr - prev)*sens,0,0);
 
-  if(pot_ave <= 1)
-  {
-    cursor = 0; //move cursor to the left boundary of screen.
-    Mouse.move(-1079,0);
-  } 
-  else if (pot_ave >= 1020)
-  {
-    cursor = 1079; //move cursor to the right boundary of screen.
-    Mouse.move(1079,0,0);
-  }
-
-  Mouse.move(cursor - prev,0,0);
-  prev = cursor; // updating the previous cursor value.
-  return prev;
 }
